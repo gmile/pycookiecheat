@@ -121,7 +121,7 @@ def get_macos_config(browser: BrowserType) -> dict:
             ".get_macos_config"
         )
         raise ValueError(errmsg) from e
-    cookie_file = "~" / app_support / cookies_suffix
+    cookie_file = Path.home() / app_support / cookies_suffix
 
     # Cookie location and keyring username in MacOS depends on whether the
     # application was installed from the App Store or direct download. To find
@@ -129,10 +129,10 @@ def get_macos_config(browser: BrowserType) -> dict:
     # it's not there. Currently this distinction is only known for Slack, so
     # that is the only case handled here.
     isAppStore = False
-    if browser is BrowserType.SLACK and not cookie_file.expanduser().exists():
+    if browser is BrowserType.SLACK and not cookie_file.exists():
         isAppStore = True
         cookie_file = (
-            "~/Library/Containers/com.tinyspeck.slackmacgap/Data"
+            Path.home() / "Library/Containers/com.tinyspeck.slackmacgap/Data"
             / app_support / cookies_suffix
         )
 
